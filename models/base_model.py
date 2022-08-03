@@ -31,7 +31,9 @@ class BaseModel:
 
     def to_dict(self):
         """Returns a dictionnary containing all keys/values of __dict__ """
-        r = {"__class__": self.__class__.__name__}
+        r = {}
+        r["__class__"] = self.__class__.__name__
+
         for key in self.__dict__.keys():
             value = self.__dict__[key]
             if type(value) is datetime:
