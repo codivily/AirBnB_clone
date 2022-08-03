@@ -77,7 +77,8 @@ class TestBaseModel_to_Dict_Method(unittest.TestCase):
     def test_attribute_ISO_format(self):
         b1 = BaseModel()
         dic = b1.to_dict()
-        self.assertEqual(type(dic), str)
+        self.assertEqual(type(dic['created_at']), str)
+        self.assertEqual(type(dic['updated_at']), str)
 
 if __name__ == "__main__":
     unittest.main()
