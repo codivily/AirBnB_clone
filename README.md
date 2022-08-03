@@ -11,4 +11,4 @@ This project was taken on during the Full Stack Software Engineering studies at 
 ## Unit tests
 |Classes|Unit tests|
 |-------|----------|
-|`BaseModel`|[test_base_model](./tests/test_models/test_base.py)|
+|`BaseModel`|[test_base_model](./tests/test_models/test_base_model.py)|
