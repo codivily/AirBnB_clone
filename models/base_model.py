@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 class BaseModel:
     """The base model class"""
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Initialize an instance of `BaseModel` class"""
         self.id = str(uuid.uuid4())
 
