@@ -54,7 +54,7 @@ class TestBaseModel_Instance_Print(unittest.TestCase):
     def test_str_return(self):
         b1 = BaseModel()
         ret = "[{}] ({}) {}".format("BaseModel", b1.id, str(b1.__dict__))
-        self.assertEqual(print(b1), print(ret))
+        self.assertEqual(str(b1), ret)
 
 class TestBaseModel_Save_Method(unittest.TestCase):
     """Unittest for testing the save method."""
