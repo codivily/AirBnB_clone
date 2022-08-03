@@ -14,7 +14,7 @@ class BaseModel:
         self.id = str(uuid.uuid4())
 
         now = datetime.now(timezone.utc)
-        self.create_at = now
+        self.created_at = now
         self.updated_at = now
 
     def __str__(self):
