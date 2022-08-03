@@ -78,7 +78,7 @@ class TestBaseModel_to_Dict_Method(unittest.TestCase):
         b1 = BaseModel()
         dic = b1.to_dict()
         className = {"__class__": "BaseModel"}
-        self.assertEqual(dic, dic | className)
+        self.assertDictContainsSubset(dic, className)
 
 if __name__ == "__main__":
     unittest.main()
