@@ -8,6 +8,7 @@ Unittest classes:
     TestBase_save_to_file - line 156
     TestBase_from_json_string - line 234
 """
+from datetime import datetime
 import unittest
 from models.base_model import BaseModel
 
