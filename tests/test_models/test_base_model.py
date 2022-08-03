@@ -69,15 +69,15 @@ class TestBaseModel_Save_Method(unittest.TestCase):
 class TestBaseModel_to_Dict_Method(unittest.TestCase):
     """Unittest for testing the to_dict method."""
 
-    def test_validates_to_dict(self):
-        b1 = BaseModel()
-        dic = b1.to_dict()
-        self.assertEqual(dic, b1.__dict__)
-
     def test_className_present(self):
         b1 = BaseModel()
         dic = b1.to_dict()
         self.assertNotEqual(dic, b1.__dict__)
+
+    def test_attribute_ISO_format(self):
+        b1 = BaseModel()
+        dic = b1.to_dict()
+        self.assertEqual(type(dic), str)
 
 if __name__ == "__main__":
     unittest.main()
