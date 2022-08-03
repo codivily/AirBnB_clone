@@ -77,8 +77,7 @@ class TestBaseModel_to_Dict_Method(unittest.TestCase):
     def test_className_present(self):
         b1 = BaseModel()
         dic = b1.to_dict()
-        className = {"__class__": "BaseModel"}
-        self.assertDictContainsSubset(dic, className)
+        self.assertNotEqual(dic, b1.__dict__)
 
 if __name__ == "__main__":
     unittest.main()
