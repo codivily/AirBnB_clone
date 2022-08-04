@@ -15,16 +15,15 @@ class BaseModel:
             *args (any): Unused.
             **kwargs (dict): Key/value pairs of attributes.
         """
-        tform = "%Y-%m-%dT%H:%M:%S.%f"
         self.id = str(uuid4())
         now = datetime.now(timezone.utc)
         self.created_at = now
         self.updated_at = now
         if (kwargs):
             for k, v in kwargs.items():
-                if k is not "__class__":
+                if k != "__class__":
                     if k == "created_at" or k == "updated_at":
-                        self.__dict__[k] = datetime.strptime(v, tform)
+                        self.__dict__[k] = datetime.fromisoformat(v)
                     else:
                         self.__dict__[k] = v
 
