@@ -2,20 +2,31 @@
 """`BaseModel` class module that defines all common attributs/methods
 for other classes
 """
-import uuid
+from uuid import uuid4
 from datetime import datetime, timezone
-
 
 class BaseModel:
     """The base model class"""
 
     def __init__(self, *args, **kwargs):
-        """Initialize an instance of `BaseModel` class"""
-        self.id = str(uuid.uuid4())
+        """Initialize an instance of `BaseModel` class
 
+        Args:
+            *args (any): Unused.
+            **kwargs (dict): Key/value pairs of attributes.
+        """
+        tform = "%Y-%m-%dT%H:%M:%S.%f"
+        self.id = str(uuid4())
         now = datetime.now(timezone.utc)
         self.created_at = now
         self.updated_at = now
+        if (kwargs):
+            for k, v in kwargs.items():
+                if k is not "__class__":
+                    if k == "created_at" or k == "updated_at":
+                        self.__dict__[k] = datetime.strptime(v, tform)
+                    else:
+                        self.__dict__[k] = v
 
     def __str__(self):
         """Returns a string representation of `BaseModel` instance"""
