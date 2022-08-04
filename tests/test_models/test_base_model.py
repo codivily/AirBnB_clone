@@ -8,7 +8,7 @@ Unittest classes:
     TestBase_Save_Method - line 59
     TestBase_from_json_string - line 234
 """
-from datetime import datetime
+from datetime import datetime, timezone
 import unittest
 from models.base_model import BaseModel
 
@@ -79,6 +79,20 @@ class TestBaseModel_to_Dict_Method(unittest.TestCase):
         dic = b1.to_dict()
         self.assertEqual(type(dic['created_at']), str)
         self.assertEqual(type(dic['updated_at']), str)
+
+class TestBaseModel_Kwargs(unittest.TestCase):
+    """Unittest for instantiating BaseModel from kwargs"""
+
+    def test_recreate(self):
+        """Test BaseModel instantiation from kwargs"""
+        b1 = BaseModel()
+        b1.my_number = 89
+
+        b2 = BaseModel(**b1.to_dict())
+        self.assertEqual(b1.id, b2.id)
+        self.assertEqual(b1.my_number, b2.my_number)
+        self.assertEqual(b2.created_at.isoformat(), b2.created_at.isoformat())
+        self.assertEqual(b1.updated_at.isoformat(), b2.updated_at.isoformat())
 
 if __name__ == "__main__":
     unittest.main()
