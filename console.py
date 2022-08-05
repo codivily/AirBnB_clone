@@ -12,9 +12,12 @@ class HBNBCommand(cmd.Cmd):
         exit()
 
     def do_help(self, arg):
-        print("Documented command (type help <topic>):")
-        print("=======================================")
-        print("EOF help quit")
+        if arg == 'quit':
+            print('Quit command to exit the program')
+        else:
+            print("Documented command (type help <topic>):")
+            print("=======================================")
+            print("EOF help quit")
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
