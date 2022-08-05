@@ -21,15 +21,18 @@ class HBNBCommand(cmd.Cmd):
         print('Quit command to exit the program\n')
 
     def help_create(self):
+        """`create` command help"""
         print('Creates a new instance of BaseModel\n')
 
     def help_show(self):
+        """`show` command help"""
         print('Shows a BaseModel instance if exists\n')
 
     def emptyline(self):
         pass
 
     def do_create(self, arg):
+        """Creates a new instance of BaseModel"""
         if arg:
             try:
                 constructor = globals().get(arg, None)
@@ -42,6 +45,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
 
     def do_show(self, arg):
+        """Shows an instance given its id"""
         if not arg:
             print("** class name missing **")
             return
