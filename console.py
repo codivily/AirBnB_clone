@@ -8,8 +8,6 @@ class HBNBCommand(cmd.Cmd):
     """Class containing the entry point of the command interperter"""
     prompt = "(hbnb) "
 
-    #doc_header = 'Documented commands (type help <topic>):'
-
     def do_quit(self, arg):
         """Command to exit the program."""
         exit()
