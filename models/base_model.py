@@ -4,6 +4,7 @@ for other classes
 """
 from uuid import uuid4
 from datetime import datetime, timezone
+import storage
 
 class BaseModel:
     """The base model class"""
@@ -26,18 +27,20 @@ class BaseModel:
                         self.__dict__[k] = datetime.fromisoformat(v)
                     else:
                         self.__dict__[k] = v
+        else:
+            storage.new()
 
     def __str__(self):
         """Returns a string representation of `BaseModel` instance"""
         s = "[{}] ({}) {}".format("BaseModel", self.id, str(self.__dict__))
         return s
 
-
     def save(self):
         """
         Updates the public instance method updated_at with current datetime
         """
         self.updated_at = datetime.now(timezone.utc).isoformat()
+        self.storage
 
     def to_dict(self):
         """Returns a dictionnary containing all keys/values of __dict__ """
@@ -50,7 +53,6 @@ class BaseModel:
                 r[key] = value.isoformat()
             else:
                 r[key]= value
-
         return (r)
 
 if __name__ == '__main__':
