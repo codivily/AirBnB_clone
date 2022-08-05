@@ -20,6 +20,12 @@ class HBNBCommand(cmd.Cmd):
     def help_quit(self):
         print('Quit command to exit the program\n')
 
+    def help_create(self):
+        print('Creates a new instance of BaseModel\n')
+
+    def help_show(self):
+        print('Shows a BaseModel instance if exists\n')
+
     def emptyline(self):
         pass
 
