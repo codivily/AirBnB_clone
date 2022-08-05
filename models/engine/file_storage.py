@@ -46,6 +46,5 @@ class FileStorage():
 
         objects = [BaseModel(**dictionary) for dictionary in obj_dicts]
         """Reloading"""
-        return
         for obj in objects:
             FileStorage.__objects[obj.id] = obj
