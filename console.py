@@ -10,15 +10,18 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def do_quit(self, arg):
+        """Command to exit the program."""
         exit()
 
-    def do_help(self, arg):
-        if arg == 'quit':
-            print('Quit command to exit the program')
-        else:
-            print("Documented command (type help <topic>):")
-            print("=======================================")
-            print("EOF help quit")
+    def do_EOF(self, arg):
+        """Command to exit the program."""
+        return True
+
+    def help_quit(self):
+        print('Quit command to exit the program\n')
+
+    def emptyline(self):
+        pass
 
     def do_create(self, arg):
         if arg:
