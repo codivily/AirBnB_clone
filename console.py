@@ -5,7 +5,7 @@ import cmd
 
 
 class HBNBCommand(cmd.Cmd):
-    """The console"""
+    """Class containing the entry point of the command interperter"""
     prompt = "(hbnb) "
 
     def do_quit(self, arg):
@@ -18,4 +18,3 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-
