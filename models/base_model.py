@@ -4,11 +4,10 @@ for other classes
 """
 from uuid import uuid4
 from datetime import datetime, timezone
-import storage
+import models
 
 class BaseModel:
     """The base model class"""
-
     def __init__(self, *args, **kwargs):
         """Initialize an instance of `BaseModel` class
 
@@ -16,19 +15,21 @@ class BaseModel:
             *args (any): Unused.
             **kwargs (dict): Key/value pairs of attributes.
         """
-        self.id = str(uuid4())
+        self.id = str(uuid4()) 
         now = datetime.now(timezone.utc)
         self.created_at = now
         self.updated_at = now
-        if (kwargs):
-            for k, v in kwargs.items():
-                if k != "__class__":
-                    if k == "created_at" or k == "updated_at":
-                        self.__dict__[k] = datetime.fromisoformat(v)
-                    else:
-                        self.__dict__[k] = v
-        else:
-            storage.new()
+
+        for k, v in kwargs.items():
+            if k == "__class__":
+                continue
+            if k in ('created_at', 'updated_at'):
+                self.__dict__[k] = datetime.fromisoformat(v)
+            else:
+                self.__dict__[k] = v
+
+        if not kwargs:
+            models.storage.new(self)
 
     def __str__(self):
         """Returns a string representation of `BaseModel` instance"""
@@ -40,19 +41,18 @@ class BaseModel:
         Updates the public instance method updated_at with current datetime
         """
         self.updated_at = datetime.now(timezone.utc).isoformat()
-        self.storage
+        models.storage.save()
 
     def to_dict(self):
         """Returns a dictionnary containing all keys/values of __dict__ """
         r = {}
         r["__class__"] = self.__class__.__name__
 
-        for key in self.__dict__.keys():
-            value = self.__dict__[key]
-            if type(value) is datetime:
-                r[key] = value.isoformat()
+        for k, v in self.__dict__.items():
+            if type(v) is datetime:
+                r[k] = v.isoformat()
             else:
-                r[key]= value
+                r[k] = v
         return (r)
 
 if __name__ == '__main__':

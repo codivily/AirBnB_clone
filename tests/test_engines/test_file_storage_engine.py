@@ -4,7 +4,6 @@
 import unittest
 from models.base_model import BaseModel
 from models import storage
-from models.engine.file_storage import FileStorage
 import os
 
 class TestFileStorageEngine(unittest.TestCase):
@@ -13,33 +12,34 @@ class TestFileStorageEngine(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Setup the test case"""
-        FileStorage.__file_path = "data.json"
+        if os.path.exists(storage._FileStorage__file_path):
+            os.remove(storage._FileStorage__file_path)
 
     @classmethod
     def tearDownClass(cls):
         """Cleanup after tests done"""
-        os.remove(FileStorage.__file_path)
+        os.remove(storage._FileStorage__file_path)
 
     def test_storage_save_objects(self):
         """Test storage.new method"""
+        storage.reload()
+        objects = storage.all()
+
+        self.assertEqual(len(objects), 0)
+
         obj1 = BaseModel()
         obj2 = BaseModel()
 
         obj1.save()
         obj2.save()
 
-        objects = storage.all()
-
-        self.assertIs(objects, dict)
-        self.assertEqual(len(objects), 2)
-
-        self.assertEqual(obj1.id in objects, True)
-        self.assertEqual(obj2.id in objects, True)
-
-        self.assertEqual(objects.get(obj1.id) is obj1, True)
-        self.assertEqual(objects.get(obj2.id) is obj2, True)
-
+        self.assertIs(type(storage.all()), dict)
+        self.assertEqual(len(storage.all()), 2)
 
         storage.reload()
-        objects2 = storage.all()
-        self.assertEqual(objects is objects2, False)
+        self.assertEqual(len(storage.all()), 2)
+
+        self.assertEqual(obj1.id in storage.all(), True)
+        self.assertEqual(obj2.id in storage.all(), True)
+
+        self.assertEqual(len(storage.all()), 2)

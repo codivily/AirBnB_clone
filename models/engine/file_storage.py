@@ -10,7 +10,7 @@ from models.base_model import BaseModel
 
 class FileStorage():
     __file_path = "file.json"
-    __objects = {}
+    __objects = dict() 
 
     def all(self):
         """Returns the dictionary __objects."""
@@ -22,15 +22,17 @@ class FileStorage():
         Args:
             obj (an object)
         """
-        key = "{}.{}".format(self.__class__.__name__, obj.id)
-        FileStorage.__objects[key] = obj
+        if obj.id in FileStorage.__objects:
+            print("exists")
+            return
+        FileStorage.__objects[obj.id] = obj
 
     def save(self):
         """Serializes __objects to the JSON file __file_path."""
-        obj_dict = [obj.to_dict for obj in FileStorage.__objects.items()]
+        obj_dicts = [obj.to_dict() for key, obj in FileStorage.__objects.items()]
 
         with open(FileStorage.__file_path, "w", encoding="utf-8") as f:
-            json.dump(obj_dict, f)
+            json.dump(obj_dicts, f)
 
     def reload(self):
         """Deserializes the JSON file to __objects
@@ -38,9 +40,12 @@ class FileStorage():
         if not os.path.exists(FileStorage.__file_path):
             return
 
+        obj_dicts = []
         with open(FileStorage.__file_path, "r", encoding="utf-8") as f:
-            obj_dict = json.load(f)
+            obj_dicts = json.load(f)
 
-        objects = [BaseModel(**params) for params in obj_dict]
+        objects = [BaseModel(**dictionary) for dictionary in obj_dicts]
         """Reloading"""
-        FileStorage.__objects = {obj.id for obj in objects}
+        return
+        for obj in objects:
+            FileStorage.__objects[obj.id] = obj
