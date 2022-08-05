@@ -68,7 +68,42 @@ class HBNBCommand(cmd.Cmd):
            print(storage.all()[strs[1]])
         else:
             print("** no instance found **")
+
+    def do_destroy(self, arg):
+        """Destroys an instance based on he class name and id"""
+        if not arg:
+            print("** class name missing**")
+            return
+        strs = arg.split(" ")
+        count = len(strs)
+
+        if count == 0:
+            print ("** class name missing**")
+            return
+        class_name = strs[0]
+
+        kclass = globals().get(class_name, None)
+        if kclass is None:
+            print("** class doesn't exist **")
+            return
+
+        if count < 2:
+            print("** instance id missing **")
+            return
+        obj_id = strs[1]
     
+        if obj_id not in storage.all():
+            print("** no instance found **")
+            return
+
+        obj = storage.all()[obj_id]
+        if obj.__class__.__name__ != class_name:
+            print("** no instance found **")
+            return
+
+        storage.all().pop(obj_id, None)
+        storage.save()
+
     def do_all(self, arg):
         """Prints all string representation of all instances"""
         kclass = globals().get(arg, None)
@@ -95,18 +130,21 @@ class HBNBCommand(cmd.Cmd):
         if kclass is None:
             print ("** class doesn't exist **")
             return
-        className = strs[0]
+        class_name = strs[0]
 
         if count < 2:
             print("** instance id missing **")
             return
-        objId = strs[1]
+        obj_id = strs[1]
 
-        if  objId not in storage.all():
+        if  obj_id not in storage.all():
             print("** no instance found **")
             return
 
-        obj = storage.all()[objId]
+        obj = storage.all()[obj_id]
+        if obj.__class__.__name__ != class_name:
+            print("** no instance found **")
+            return
 
         if count < 3:
             print("** attribute name missing **")
