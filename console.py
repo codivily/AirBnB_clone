@@ -3,6 +3,7 @@
 
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 class HBNBCommand(cmd.Cmd):
@@ -35,9 +36,8 @@ class HBNBCommand(cmd.Cmd):
         """Creates a new instance of BaseModel"""
         if arg:
             try:
-                constructor = globals().get(arg, None)
-                obj = constructor()
-                obj.save()
+                kclass = globals().get(arg, None)
+                obj = kclass()
                 print(obj.id)
             except:
                 print ("** class doesn't exist **")
