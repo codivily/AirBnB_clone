@@ -36,6 +36,7 @@ class HBNBCommand(cmd.Cmd):
         print('Shows a BaseModel instance if exists\n')
 
     def emptyline(self):
+        """Nothing happens on empty entered"""
         pass
 
     def do_create(self, arg):

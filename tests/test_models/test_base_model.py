@@ -17,35 +17,43 @@ class TestBaseModel_Instantiation(unittest.TestCase):
     """Unittests for testing instantiation of the BaseModel class."""
 
     def test_IsInstanceOf(self):
+        """Test instance"""
         b1 = BaseModel()
         self.assertIsInstance(b1, BaseModel)
 
     def test_ContainsId(self):
+        """Test if id attribute exists"""
         b1 = BaseModel()
         self.assertTrue(hasattr(b1, "id"))
 
     def test_IdType(self):
+        """Test if `id` attribute type"""
         b1 = BaseModel()
         self.assertEqual(type(b1.id), str)
 
     def test_CompareTwoInstancesId(self):
+        """Compare distinct instances ids"""
         b1 = BaseModel()
         b2 = BaseModel()
         self.assertNotEqual(b1.id, b2.id)
 
     def test_ContainsCreated_at(self):
+        """Checks `created_at` attribute existence"""
         b1 = BaseModel()
         self.assertTrue(hasattr(b1, "created_at"))
 
     def test_Created_atInstance(self):
+        """Checks `created_at` attribute's type"""
         b1 = BaseModel()
         self.assertIsInstance(b1.created_at, datetime)
 
     def test_ContainsUpdated_at(self):
+        """Checks `updated_at` attribute existence"""
         b1 = BaseModel()
         self.assertTrue(hasattr(b1, "updated_at"))
 
-    def test_Created_atInstance(self):
+    def test_Updated_atInstance(self):
+        """Check `updated_at` attribute type"""
         b1 = BaseModel()
         self.assertIsInstance(b1.updated_at, datetime)
 
@@ -63,6 +71,7 @@ class TestBaseModel_Save_Method(unittest.TestCase):
     """Unittest for testing the save method."""
 
     def test_validates_save(self):
+        """Check save models"""
         b1 = BaseModel()
         updated_at_1 = b1.updated_at
         b1.save()
@@ -74,11 +83,13 @@ class TestBaseModel_to_Dict_Method(unittest.TestCase):
     """Unittest for testing the to_dict method."""
 
     def test_className_present(self):
+        """Test className present"""
         b1 = BaseModel()
         dic = b1.to_dict()
         self.assertNotEqual(dic, b1.__dict__)
 
     def test_attribute_ISO_format(self):
+        """Test datetime field isoformated"""
         b1 = BaseModel()
         dic = b1.to_dict()
         self.assertEqual(type(dic['created_at']), str)
