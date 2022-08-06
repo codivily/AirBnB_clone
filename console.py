@@ -204,7 +204,7 @@ class HBNBCommand(cmd.Cmd):
             self.do_show(cmd[0] + " " + method[1])
             return
         if 'destroy(' == method[0]:
-            self.do_show(cmd[0] + " " + method[1])
+            self.do_destroy(cmd[0] + " " + method[1])
             return
 
 
