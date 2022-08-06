@@ -98,7 +98,8 @@ class HBNBCommand(cmd.Cmd):
         if count < 2:
             print("** instance id missing **")
             return
-        obj_id = strs[1]
+
+        obj_id = "{}.{}".format(strs[0], strs[1])
 
         if obj_id not in storage.all():
             print("** no instance found **")
