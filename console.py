@@ -45,6 +45,7 @@ class HBNBCommand(cmd.Cmd):
             try:
                 kclass = globals().get(arg, None)
                 obj = kclass()
+                obj.save()
                 print(obj.id)
             except Exception:
                 print("** class doesn't exist **")
@@ -122,6 +123,18 @@ class HBNBCommand(cmd.Cmd):
                 continue
             print(v)
 
+    def do_count(self, arg):
+        """Print the count all class instances"""
+        kclass = globals().get(arg, None)
+        if kclass is None:
+            print("** class doesn't exist **")
+            return
+        count = 0
+        for obj in storage.all().values():
+            if obj.__class__.__name__ == arg:
+                count += 1
+        print(count)
+
     def do_update(self, arg):
         """Update an instance base of class name and id"""
         if not arg:
@@ -169,6 +182,18 @@ class HBNBCommand(cmd.Cmd):
             setattr(obj, attr_name, attr_value)
 
         obj.save()
+
+    def default(self, arg):
+        if arg is None:
+            return
+        cmd = arg.split('.')
+        if len(cmd) != 2:
+            return
+        if cmd[1] == 'all()':
+            self.do_all(cmd[0])
+
+        if cmd[1] == 'count()':
+            self.do_count(cmd[0])
 
 
 if __name__ == '__main__':
