@@ -14,9 +14,19 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
+
 class FileStorage():
+    """The file storage engine class"""
+
     __file_path = "file.json"
-    __objects = dict() 
+    __objects = dict()
+
+    @classmethod
+    def clear(cls):
+        """clear the storage. A helper method for unittesting"""
+        if os.path.exists(cls.__file_path):
+            os.remove(cls.__file_path)
+        cls.__objects = dict()
 
     def all(self):
         """Returns the dictionary __objects."""
@@ -31,14 +41,13 @@ class FileStorage():
         if obj.id in FileStorage.__objects:
             print("exists")
             return
-        FileStorage.__objects[obj.id] = obj
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        FileStorage.__objects[key] = obj
 
     def save(self):
         """Serializes __objects to the JSON file __file_path."""
-        obj_kwargs = [obj.to_dict() for key, obj in FileStorage.__objects.items()]
-
         with open(FileStorage.__file_path, "w", encoding="utf-8") as f:
-            json.dump(obj_kwargs, f)
+            json.dump([o.to_dict() for o in self.all().values()], f)
 
     def reload(self):
         """Deserializes the JSON file to __objects
@@ -53,4 +62,4 @@ class FileStorage():
         """ Reloading """
         for obj_kwarg in obj_kwargs:
             kclass = globals().get(obj_kwarg['__class__'])
-            FileStorage.__objects[obj_kwarg['id']] = kclass(**obj_kwarg)
+            self.new(kclass(**obj_kwarg))

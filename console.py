@@ -11,6 +11,7 @@ from models.place import Place
 from models.review import Review
 from models import storage
 
+
 class HBNBCommand(cmd.Cmd):
     """Class containing the entry point of the command interperter"""
     prompt = "(hbnb) "
@@ -44,8 +45,8 @@ class HBNBCommand(cmd.Cmd):
                 kclass = globals().get(arg, None)
                 obj = kclass()
                 print(obj.id)
-            except:
-                print ("** class doesn't exist **")
+            except Exception:
+                print("** class doesn't exist **")
         else:
             print("** class name missing **")
 
@@ -62,15 +63,15 @@ class HBNBCommand(cmd.Cmd):
 
         kclass = globals().get(strs[0], None)
         if kclass is None:
-            print("** class doesn't exist **") 
+            print("** class doesn't exist **")
             return
 
         if len(strs) != 2:
-           print("** instance id missing **")
-           return
-       
+            print("** instance id missing **")
+            return
+
         if strs[1] in storage.all():
-           print(storage.all()[strs[1]])
+            print(storage.all()[strs[1]])
         else:
             print("** no instance found **")
 
@@ -83,7 +84,7 @@ class HBNBCommand(cmd.Cmd):
         count = len(strs)
 
         if count == 0:
-            print ("** class name missing**")
+            print("** class name missing**")
             return
         class_name = strs[0]
 
@@ -96,7 +97,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
         obj_id = strs[1]
-    
+
         if obj_id not in storage.all():
             print("** no instance found **")
             return
@@ -130,10 +131,10 @@ class HBNBCommand(cmd.Cmd):
         if not strs:
             print("** class name missing **")
             return
-        
+
         kclass = globals().get(strs[0], None)
         if kclass is None:
-            print ("** class doesn't exist **")
+            print("** class doesn't exist **")
             return
         class_name = strs[0]
 
@@ -142,7 +143,7 @@ class HBNBCommand(cmd.Cmd):
             return
         obj_id = strs[1]
 
-        if  obj_id not in storage.all():
+        if obj_id not in storage.all():
             print("** no instance found **")
             return
 
@@ -167,11 +168,6 @@ class HBNBCommand(cmd.Cmd):
             setattr(obj, attr_name, attr_value)
 
         obj.save()
-
-        
-
-
-
 
 
 if __name__ == '__main__':

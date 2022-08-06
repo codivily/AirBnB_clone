@@ -1,5 +1,5 @@
-#!/usr/bin/python3
-"""Test reload method."""
+#!/usr/bin/env python3
+"""Initialize the storage engine"""
 
 from .engine.file_storage import FileStorage
 
