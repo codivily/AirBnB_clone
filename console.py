@@ -156,7 +156,8 @@ class HBNBCommand(cmd.Cmd):
         if count < 2:
             print("** instance id missing **")
             return
-        obj_id = strs[1]
+
+        obj_id = "{}.{}".format(strs[0], strs[1])
 
         if obj_id not in storage.all():
             print("** no instance found **")
@@ -203,8 +204,13 @@ class HBNBCommand(cmd.Cmd):
         if 'show(' == method[0]:
             self.do_show(cmd[0] + " " + method[1])
             return
+
         if 'destroy(' == method[0]:
             self.do_destroy(cmd[0] + " " + method[1])
+            return
+
+        if 'update(' == method[0]:
+            self.do_update(cmd[0] + " " + " ".join(method[1::2]))
             return
 
 
