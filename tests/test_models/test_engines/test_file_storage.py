@@ -160,7 +160,7 @@ class TestFileStorage_methods(unittest.TestCase):
              self.assertIn("Review." + rv.id, save_test)
 
     def test_save_with_arg(self):
-        wit self.assertRaises(TypeError):
+        with self.assertRaises(TypeError):
             models.storage.save(None)
 
     def test_reload(self):
