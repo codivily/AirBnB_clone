@@ -4,7 +4,7 @@ for other classes
 """
 from uuid import uuid4
 from datetime import datetime, timezone
-# import models
+import models
 
 
 class BaseModel:
@@ -41,7 +41,7 @@ class BaseModel:
         """
         Updates the public instance method updated_at with current datetime
         """
-        self.updated_at = datetime.now(timezone.utc).isoformat()
+        self.updated_at = datetime.now(timezone.utc)
         models.storage.save()
 
     def to_dict(self):
