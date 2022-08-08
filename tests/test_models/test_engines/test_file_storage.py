@@ -60,10 +60,10 @@ class TestFileStorage_instantiation(unittest.TestCase):
         self.assertEqual(type(FileStorage()), FileStorage)
 
     def test_FileStorage_file_path_is_private_str(self):
-        self.assertEqual(str, type(FileStorage._FileStorage.__file_path))
+        self.assertEqual(str, type(storage._FileStorage.__file_path))
 
     def test_FileStorage_objects_is_private_dict(self):
-        self.assertEqual(dict, type(FileStorage._FileStorage.__objects))
+        self.assertEqual(dict, type(storage._FileStorage.__objects))
 
     def test_storage_initializes(self):
         self.assertEqual(type(models.storage), FileStorage)
@@ -150,7 +150,7 @@ class TestFileStorage_methods(unittest.TestCase):
          models.storage.save()
          save_test = ""
          with open("file.json", "r") as f:
-             save_text = f.read()
+             save_test = f.read()
              self.assertIn("BaseModel." + bm.id, save_test)
              self.assertIn("User." + us.id, save_test)
              self.assertIn("State." + st.id, save_test)
@@ -179,7 +179,7 @@ class TestFileStorage_methods(unittest.TestCase):
         models.storage.new(am)
         models.storage.new(rv)
         models.storage.save()
-        model.storage.reload()
+        models.storage.reload()
         objs = FileStorage._FileStorage__objects
         self.assertIn("BaseModel." + bm.id, objs)
         self.assertIn("User." + us.id, objs)
