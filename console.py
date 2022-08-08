@@ -217,21 +217,15 @@ class HBNBCommand(cmd.Cmd):
         if arg is None:
             return
 
-        cmdPattern ="^([A-Z][a-z]+)\.([a-z]+)\(([^(]*)\)"
+        cmdPattern ="^([A-Za-z]+)\.([a-z]+)\(([^(]*)\)"
         paramsPattern = """^"([^"]+)"(?:,\s*(?:"([^"]+)"|(\{[^}]+\}))(?:,\s*(?:("?[^"]+"?)))?)?"""
         m = re.match(cmdPattern, arg)
         if not m:
-            super().default()
+            super().default(arg)
             return
         mName, method, params = m.groups()
         m = re.match(paramsPattern, params)
-        if m:
-            params = [item for item in m.groups() if item]
-        else:
-            params = []
-        #print(modelName)
-        #print(method)
-        #print(params)
+        params = [item for item in m.groups() if item] if m else []
 
         cmd = " ".join([mName] + params)
 
