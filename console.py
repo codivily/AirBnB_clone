@@ -2,6 +2,9 @@
 """This the AirBnB console line interpreter"""
 
 import cmd
+import re
+import json
+
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -88,9 +91,9 @@ class HBNBCommand(cmd.Cmd):
         if count == 0:
             print("** class name missing**")
             return
-        class_name = strs[0]
+        mName = strs[0]
 
-        kclass = globals().get(class_name, None)
+        kclass = globals().get(mName, None)
         if kclass is None:
             print("** class doesn't exist **")
             return
@@ -106,7 +109,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         obj = storage.all()[obj_id]
-        if obj.__class__.__name__ != class_name:
+        if obj.__class__.__name__ != mName:
             print("** no instance found **")
             return
 
@@ -141,78 +144,111 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print("** class name missing **")
             return
-        strs = arg.split(" ")
-        count = len(strs)
-        if not strs:
+        pattern = """^([A-Z][a-z]+)\s+([\w-]+)\s+([a-z_]+|\{[^}]+})(?:\s+("[^"]+"|\w+))?$"""
+
+        m = re.match(pattern, arg)
+        groups = [s for s in m.groups() if s] if m else []
+        count = len(groups)
+
+        if not groups:
             print("** class name missing **")
             return
 
-        kclass = globals().get(strs[0], None)
+        kclass = globals().get(groups[0], None)
         if kclass is None:
             print("** class doesn't exist **")
             return
-        class_name = strs[0]
+        mName = groups[0]
 
         if count < 2:
             print("** instance id missing **")
             return
 
-        obj_id = "{}.{}".format(strs[0], strs[1])
+        obj_id = "{}.{}".format(mName, groups[1])
 
         if obj_id not in storage.all():
             print("** no instance found **")
             return
 
         obj = storage.all()[obj_id]
-        if obj.__class__.__name__ != class_name:
+        if obj.__class__.__name__ != mName:
             print("** no instance found **")
             return
 
-        if count < 3:
+        if count == 3:
+            """ dealing with a dictionary """
+            if groups[2][0] != '{':
+                print("** value missing **")
+                return
+
+            dictionary = json.loads(groups[2].replace("'", '"'))
+            for key, value in dictionary.items():
+                setattr(obj, key, value)
+            return
+        elif count < 3:
             print("** attribute name missing **")
             return
-        attr_name = strs[2]
+
+        attrName = groups[2]
 
         if count < 4:
             print("** value missing **")
             return
-        attr_value = strs[3]
 
-        if hasattr(obj, attr_name):
-            setattr(obj, attr_name, type(getattr(obj, attr_name))(attr_value))
-        else:
-            setattr(obj, attr_name, attr_value)
+        attrValue = None
+        try:
+            attrValue = int(groups[3])
+        except ValueError:
+            pass
 
+        if attrValue is None:
+            try:
+                attrValue = float(groups[3])
+            except ValueError:
+                pass
+
+        if attrValue is None:
+            attrValue = groups[3].replace('"', '')
+
+        setattr(obj, attrName, attrValue)
         obj.save()
 
     def default(self, arg):
         if arg is None:
             return
-        cmd = arg.split('.')
-        if len(cmd) != 2:
-            return
 
-        if cmd[1] == 'all()':
-            self.do_all(cmd[0])
+        cmdPattern ="^([A-Z][a-z]+)\.([a-z]+)\(([^(]*)\)"
+        paramsPattern = """^"([^"]+)"(?:,\s*(?:"([^"]+)"|(\{[^}]+\}))(?:,\s*(?:("?[^"]+"?)))?)?"""
+        m = re.match(cmdPattern, arg)
+        if not m:
+            super().default()
             return
+        mName, method, params = m.groups()
+        m = re.match(paramsPattern, params)
+        if m:
+            params = [item for item in m.groups() if item]
+        else:
+            params = []
+        #print(modelName)
+        #print(method)
+        #print(params)
 
-        if cmd[1] == 'count()':
-            self.do_count(cmd[0])
-            return
-        method = cmd[1].split('"')
+        cmd = " ".join([mName] + params)
 
-        if 'show(' == method[0]:
-            self.do_show(cmd[0] + " " + method[1])
-            return
+        if method == 'all':
+            return self.do_all(cmd)
 
-        if 'destroy(' == method[0]:
-            self.do_destroy(cmd[0] + " " + method[1])
-            return
+        if method == 'count':
+            return self.do_count(cmd)
 
-        if 'update(' == method[0]:
-            self.do_update(cmd[0] + " " + " ".join(method[1::2]))
-            return
+        if method == 'show':
+            return self.do_show(cmd)
 
+        if method == 'destroy':
+            return self.do_destroy(cmd)
+
+        if method == 'update':
+            return self.do_update(cmd)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
