@@ -55,15 +55,15 @@ class TestFileStorageEngine(unittest.TestCase):
 
 class TestFileStorage_instantiation(unittest.TestCase):
     """Unittests for testing instantiation of the FileStorage class."""
-    
+
     def test_FileStorage_instantiation_no_args(self):
         self.assertEqual(type(FileStorage()), FileStorage)
 
     def test_FileStorage_file_path_is_private_str(self):
-        self.assertEqual(str, type(storage._FileStorage.__file_path))
+        self.assertEqual(str, type(storage._FileStorage__file_path))
 
     def test_FileStorage_objects_is_private_dict(self):
-        self.assertEqual(dict, type(storage._FileStorage.__objects))
+        self.assertEqual(dict, type(storage._FileStorage__objects))
 
     def test_storage_initializes(self):
         self.assertEqual(type(models.storage), FileStorage)
@@ -151,13 +151,13 @@ class TestFileStorage_methods(unittest.TestCase):
          save_test = ""
          with open("file.json", "r") as f:
              save_test = f.read()
-             self.assertIn("BaseModel." + bm.id, save_test)
-             self.assertIn("User." + us.id, save_test)
-             self.assertIn("State." + st.id, save_test)
-             self.assertIn("Place." + pl.id, save_test)
-             self.assertIn("City." + cy.id, save_test)
-             self.assertIn("Amenity." + am.id, save_test)
-             self.assertIn("Review." + rv.id, save_test)
+             self.assertIn(bm.id, save_test)
+             self.assertIn(us.id, save_test)
+             self.assertIn(st.id, save_test)
+             self.assertIn(pl.id, save_test)
+             self.assertIn(cy.id, save_test)
+             self.assertIn(am.id, save_test)
+             self.assertIn(rv.id, save_test)
 
     def test_save_with_arg(self):
         with self.assertRaises(TypeError):
